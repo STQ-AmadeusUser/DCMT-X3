@@ -1,0 +1,89 @@
+{
+    "summary": {
+        "BPU OPs per frame (effective)": 3461120,
+        "BPU OPs per run (effective)": 3461120,
+        "BPU PE number": 1,
+        "BPU core number": 2,
+        "BPU march": "BERNOULLI2",
+        "DDR bytes per frame": 315776,
+        "DDR bytes per run": 315776,
+        "DDR bytes per second": 2105678696,
+        "DDR megabytes per frame": 0.301,
+        "DDR megabytes per run": 0.301,
+        "DDR megabytes per second": 2008.1,
+        "FPS": 6668.27,
+        "HBDK version": "3.48.6",
+        "compiling options": "-f hbir -m /tmp/tmpq1ka77uf/torch-jit-export_subgraph_12.hbir -o /tmp/tmpq1ka77uf/torch-jit-export_subgraph_12.hbm --march bernoulli2 --progressbar --O3 --core-num 2 --fast --input-layout NHWC --output-layout NCHW --input-source ddr",
+        "frame per run": 1,
+        "frame per second": 6668.27,
+        "input features": [
+            [
+                "input name",
+                "input size"
+            ],
+            [
+                "455_calibrated_quantized",
+                "1x26x26x256"
+            ]
+        ],
+        "interval computing unit utilization": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.122,
+            1.674,
+            2.0,
+            0.932
+        ],
+        "interval computing units utilization": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.122,
+            1.674,
+            2.0,
+            0.932
+        ],
+        "interval loading bandwidth (megabytes/s)": [
+            2707,
+            2550,
+            2393,
+            2393,
+            2423,
+            2496,
+            1269,
+            9
+        ],
+        "interval number": 8,
+        "interval storing bandwidth (megabytes/s)": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            79
+        ],
+        "interval time (ms)": 0.02,
+        "latency (ms)": 0.15,
+        "latency (ms) by segments": [
+            0.15
+        ],
+        "latency (us)": 150.0,
+        "loaded bytes per frame": 312448,
+        "loaded bytes per run": 312448,
+        "model json CRC": "80c847d8",
+        "model json file": "/tmp/tmpq1ka77uf/torch-jit-export_subgraph_12.hbir",
+        "model name": "torch-jit-export_subgraph_12",
+        "model param CRC": "00000000",
+        "multicore sync time (ms)": 0.0,
+        "run per second": 6668.27,
+        "runtime version": "3.15.40.0",
+        "stored bytes per frame": 3328,
+        "stored bytes per run": 3328,
+        "worst FPS": 6668.27
+    }
+}
