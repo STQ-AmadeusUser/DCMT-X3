@@ -1,0 +1,49 @@
+# 模型参数组
+model_parameters:
+  # 原始Onnx浮点模型文件
+  onnx_model: 'DCMT_res.onnx'
+  # 转换的目标AI芯片架构
+  march: 'bernoulli2'
+  # 模型转换输出的用于上板执行的模型文件的名称前缀
+  output_model_file_prefix: 'DCMT_res'
+  # 模型转换输出的结果的存放目录
+  working_dir: './model_res/'
+  # 指定转换后混合异构模型是否保留输出各层的中间结果的能力
+  layer_out_dump: False
+
+# 输入信息参数组
+input_parameters:
+  # 原始浮点模型的输入节点名称
+  input_name: "input1; input2; input3"
+  # 原始浮点模型的输入数据格式（数量/顺序与input_name一致）
+  input_type_train: 'rgb; rgb; featuremap'
+  # 原始浮点模型的输入数据排布（数量/顺序与input_name一致）
+  input_layout_train: 'NCHW; NCHW; NCHW'
+  # 原始浮点模型的输入数据尺寸
+  input_shape: '1x3x127x127; 1x3x255x255; 1x4x1x1'
+  # 转换后混合异构模型需要适配的输入数据格式（数量/顺序与input_name一致）
+  input_type_rt: 'bgr; bgr; featuremap'
+  # 转换后混合异构模型需要适配的输入数据排布（数量/顺序与input_name一致），若input_type_rt配置为nv12，则此处参数不需要配置
+  input_layout_rt: 'NHWC; NHWC; NCHW'
+
+# 校准参数组
+calibration_parameters:
+  # 模型校准使用的标定样本的存放目录
+  cal_data_dir: './calibration_res/template/; ./calibration_res/search/; ./calibration_res/template_bbox/'
+  # 开启图片校准样本自动处理（skimage read; resize到输入节点尺寸）
+  preprocess_on: False
+  # 校准使用的算法类型
+  calibration_type: 'kl'
+  # max 校准方式的参数
+  max_percentile: 1.0
+
+# 编译参数组
+compiler_parameters:
+  # 编译策略选择
+  compile_mode: 'latency'
+  # 是否打开编译的debug信息
+  debug: False
+  # 模型运行核心数
+  core_num: 2
+  # 模型编译的优化等级选择
+  optimize_level: 'O3'
