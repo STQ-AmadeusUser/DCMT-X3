@@ -1,6 +1,6 @@
 # DCMT on Horizon X3 pi
 
-This is an official X3 pi deployment of DCMT based on Python, whose architectures include three version:
+This is an official X3 pi deployment of DCMT[1] based on Python, whose architectures include three version:
 * DCMT_al: a UAV tracker, whose backbone is AlexNet
 * DCMT_lt: a speed-oriented tracker, whose backbone is the same as LightTrack mobile version
 * DCMT_res: an accuracy-oriented tracker, whose backbone is ResNet50
@@ -10,7 +10,7 @@ Tracker | MACs | Params | FPS | Avg Latency | DDR Latency | Subgraph | BPU Util1
 --- | --- | --- | --- |--- |--- |--- |--- |--- |--- |---
 DCMT_al | 10.80G | 11.54M | 17.27 | 229.54ms | 646.89ms | 13 | - | - | 0.611 | -
 DCMT_lt | 2.90G | 12.29M | 17.62 | 225.72ms | 666.83ms | 14 | - | - | - | 0.636
-DCMT_res | 27.85G | 26.53M | - | - | - | 15 | - | - | - | 0.664
+DCMT_res | 27.85G | 26.53M | 8.34 | 476.54ms | 1294.12ms | 15 | - | - | - | 0.664
 
 We test BPU utilization rate by using hrut_somstatus while testing static performance with 4 threads:
 ```
@@ -133,6 +133,22 @@ hrt_model_exec perf --model_file DCMT_lt.bin --thread_num 4
 ```
 <div align="center">
   <img src="https://github.com/STQ-AmadeusUser/DCMT-X3/blob/main/images/4_thread_lt.png">
+</div>
+
+5. 1 thread of DCMT_res:
+```
+hrt_model_exec perf --model_file DCMT_res.bin --thread_num 1
+```
+<div align="center">
+  <img src="https://github.com/STQ-AmadeusUser/DCMT-X3/blob/main/images/1_thread_res.png">
+</div>
+
+6. 4 thread of DCMT_res:
+```
+hrt_model_exec perf --model_file DCMT_res.bin --thread_num 4
+```
+<div align="center">
+  <img src="https://github.com/STQ-AmadeusUser/DCMT-X3/blob/main/images/4_thread_res.png">
 </div>
 
 ## Version
