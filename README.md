@@ -8,9 +8,9 @@ This is an official X3 pi deployment of DCMT[1] based on Python, whose architect
 ## Model Overview
 Tracker | MACs | Params | FPS | Avg Latency | DDR Latency | Subgraph | BPU Util1 | BPU Util2 | UAV10FPS Success | GOT10KTEST Success
 --- | --- | --- | --- |--- |--- |--- |--- |--- |--- |---
-DCMT_al | 10.80G | 11.54M | 17.27 | 229.54ms | 646.89ms | 13 | - | - | 0.611 | -
-DCMT_lt | 2.90G | 12.29M | 17.62 | 225.72ms | 666.83ms | 14 | - | - | - | 0.636
-DCMT_res | 27.85G | 26.53M | 8.34 | 476.54ms | 1294.12ms | 15 | - | - | - | 0.664
+DCMT_al | 10.80G | 11.54M | 17.27 | 229.54ms | 646.89ms | 13 | 68.00 | 66.70 | 0.611 | -
+DCMT_lt | 2.90G | 12.29M | 17.62 | 225.72ms | 666.83ms | 14 | 33.60 | 28.30 | - | 0.636
+DCMT_res | 27.85G | 26.53M | 8.34 | 476.54ms | 1294.12ms | 15 | 74.10 | 73.43 | - | 0.664
 
 We test BPU utilization rate by using hrut_somstatus while testing static performance with 4 threads:
 ```
