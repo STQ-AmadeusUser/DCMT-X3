@@ -1,0 +1,140 @@
+COMMON:
+  LOG_DIR: 'logs'   # log file
+  CHECKPOINT_DIR: 're_snapshot'   # checkpoint file
+  USE_CUDA: True
+  GPUS: '0,1,2,3'
+#  GPUS: '4,5,6,7'
+#  GPUS: '0,1,2,3,4,5,6,7'
+
+MODEL:
+  NAME: 'DCMT'
+  BACKBONE:
+    NAME: "ResNet50Dilated"
+    LAYER: [3]
+  NECK:
+    NAME: "ShrinkChannel"
+    IN_CHANNEL: 1024
+    OUT_CHANNEL: 256
+  PRE_FUSION:
+    NAME: "CFMN"
+    STRIDE: 8
+    IN_CHANNEL: 256
+    HID_CHANNEL: 49
+    OUT_CHANNEL: 256
+  LOSS:
+    CLS_LOSS: WBCE
+    REG_LOSS: FCOSIOU
+
+TRAIN:
+  ISTRUE: False  # whether to train
+  WORKERS: 32
+  START_EPOCH: 17
+  END_EPOCH: 48
+  TEMPLATE_SIZE: 127
+  SEARCH_SIZE: 255
+  SCORE_SIZE: 31
+  BATCH: 8   # batch for each GPU
+#  RESUME: False
+  RESUME: 're_snapshot/checkpoint_e17.pth'
+  PRETRAIN: 'resnet50dilated.model'
+  LR_POLICY: 'log'
+  PRINT_FREQ: 10
+  CLS_WEIGHT: 1
+  REG_WEIGHT: 1
+  CLIP_GRAD: False
+
+  DDP:
+    ISTRUE: False  # torch distributed data parallel, default: False, normal data parallel
+    RANK: 0
+
+  WARMUP:
+    IFNOT: True
+    TYPE: 'step'
+    EPOCH: 5            # res50 5
+    WARM_POLICY: 'step'
+    KWARGS:
+      start_lr: 0.001    # res50 0.001 alex: 0.005
+      end_lr: 0.005      # res50 0.005  alex: 0.01
+      step: 1
+  LR:
+    TYPE: 'log'
+    KWARGS:
+      start_lr: 0.005        # res50 0.005  alex 0.01
+      end_lr: 0.00001         # res50 0.0005
+
+  LAYERS_LR: 0.1  # res50 0.1  alex: 1  # scale ration for backbone
+  BASE_LR: 0.005
+  UNFIX_EPOCH: 10
+  UNFIX_POLICY: 'log'
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 0.0001
+  TRAINABLE_LAYER: ['layer1', 'layer2', 'layer3']  # ['layer2', 'layer3', 'layer4'] [] FOR ALL LAYERS
+
+  DATASET:
+    VIDEOS_PER_EPOCH: -1
+#    VIDEOS_PER_EPOCH: 300000
+#    WHICH_USE: ['GOT10K']
+#    WHICH_USE: ['YTB']
+#    WHICH_USE: ['VID']
+#    WHICH_USE: ['COCO']
+#    WHICH_USE: ['DET']
+#    WHICH_USE: ['YTB', 'VID', 'DET', 'GOT10K']
+#    WHICH_USE: ['VID', 'DET', 'GOT10K', 'COCO']
+    WHICH_USE: ['YTB', 'VID', 'COCO', 'DET', 'GOT10K']  # for general epoch
+
+    AUG:
+      EXEMPLAR:
+        SHIFT: 4
+        SCALE: 0.05
+      SEARCH:
+        SHIFTs: 64
+        SCALEs: 0.18
+      COMMON:
+        COLOR: 1
+        FLIP: 0
+        BLUR: 0
+        ROTATION: 0
+        LABELSMOOTH: False
+        MIXUP: 0
+        GRAY: 0
+        CUTOUT: 0
+        NEG: 0
+    CONFIG:
+      VID:
+        PATH: '../data/vid/crop511'
+        ANNOTATION: '../data/vid/train.json'
+        RANGE: 100
+        USE: 100000
+      YTB:
+        PATH: '../data/y2b/crop511'
+        ANNOTATION: '../data/y2b/train.json'
+        RANGE: 3
+        USE: 200000
+      GOT10K:
+        PATH: '../data/got10k/crop511'
+        ANNOTATION: '../data/got10k/train.json'
+        RANGE: 100
+        USE: 200000
+      DET:
+        PATH: '../data/det/crop511'
+        ANNOTATION: '../data/det/train.json'
+        RANGE: 100
+        USE: 50000
+      COCO:
+        PATH: "../data/coco/crop511"
+        ANNOTATION: "../data/coco/train2017.json"
+        RANGE: 1
+        USE: 50000
+
+DEMO:    # TEST model is same as TRAIN.MODEL
+  RESUME: '../snapshot/DCMT_ResNet_GOT10KTEST.pth'   # if not false, ignore start and end epochs
+  DISPLAY:
+    height: 1080
+    width: 1920
+  HYPERS:  # use tuned hyper params on GOT10KTEST benchmark
+    penalty_k: 0.038
+    lr: 0.77
+    window_influence: 0.238
+    small_sz: 255
+    big_sz: 287
+    context_amount: 0.5
